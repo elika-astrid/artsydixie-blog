@@ -24,19 +24,55 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(methodOverride("_method"));
 app.use(express.static("public"));
-
+require('dotenv').config()
 
 //Mongo URI & Create Mongo Connection
 
-require('dotenv').config()
+const mongoURI = process.env.MONGO_URI;
 
-mongoose.connect(process.env.MONGO_URI, {
+// const conn = mongoose.createConnection(mongoURI, {useNewUrlParser: true, useUnifiedTopology: true})
+
+mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true
 });
-// const mongoURI = "mongodb://localhost:27017/blogDB"
-// const conn = mongoose.createConnection(mongoURI, {useNewUrlParser: true})
+
+// public folder
+
+app.use(express.static("./public"))
+
+//set storage engine
+const storage = multer.diskStorage({
+  destination: "./public/uploads/",
+  filename: function (req, file, cb){ 
+    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+  }
+});
+
+//init upload
+const upload = multer ({
+  storage: storage,
+  limits: {fileSize: 5000000},
+  fileFilter: function (req, file, cb) {
+    checkFileType(file, cb);
+}}).single("file");
+
+//check file type
+function checkFileType (file, cb){
+  //allowed ext
+  const filetypes = /jpeg|jpg|png|gif/;
+  //check ext
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  //check mime
+  const mimetype = filetypes.test(file.mimetype);
+  
+  if (mimetype && extname) {
+    return cb(null, true);
+  } else {
+    cb("error: Images Only!")
+  }
+}
 
 //Init gfs
 // let gfs;
@@ -45,11 +81,32 @@ mongoose.connect(process.env.MONGO_URI, {
 //   //Init stream
 //   gfs = Grid(conn.db, mongoose.mongo);
 //   gfs.collection("uploads");
-// })
+// });
 
 //Create storage engine
 
+// const storage = new GridFsStorage({
+//   url: mongoURI,
+//   file: (req, file) => {
+//     return new Promise((resolve, reject) => {
+//       crypto.randomBytes(16, (err, buf) => {
+//         if (err) {
+//           return reject(err);
+//         }
+//         const filename = buf.toString('hex') + path.extname(file.originalname);
+//         const fileInfo = {
+//           filename: filename,
+//           bucketName: 'uploads'
+//         };
+//         resolve(fileInfo);
+//       });
+//     });
+//   }
+// });
+// const upload = multer({ storage });
 
+
+//mongoose schema
 const postSchema = {
   title: String,
   content: String
@@ -101,8 +158,31 @@ const requestedPostId = req.params.postId;
 
 });
 
+// GET /upload
+
 app.get("/upload", function(req, res){
   res.render("upload");
+});
+
+app.post("/upload", (req, res) => {
+  upload(req, res, (err) => {
+    if (err){
+      res.render("upload", {
+        msg: err
+      });
+    } else {
+      if (req.file == undefined) {
+        res.render ("upload", {
+          msg: "Error: No File Selected!"
+        });
+      } else {
+        res.render("upload", {
+          msg: "File Uploaded Successfully!",
+          file: `uploads/${req.file.filename}`
+        });
+      }
+    }
+  })
 });
 
 app.get("/about", function(req, res){
