@@ -7,6 +7,10 @@ html {
 body {
   color: #eeecda;
   background-color: #b83b5e;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
 }
 
 .container-fluid {
@@ -14,32 +18,60 @@ body {
     padding-bottom: 70px;
 }
 
+a {
+  color: #eeecda;
+}
+
+.link {
+  color: #f08a5d;
+}
+
+.link:hover {
+  color: #eeecda;
+}
+
 /* Navbar section */
 
-.navbar {
-    padding: 15px 0;
-    border: 0;
-    border-radius: 0;
-    margin-bottom: 0;
-    font-size: 12px;
-    letter-spacing: 5px;
-    background-color:  #b83b5e;
-    color: #eeecda;
-}
-.navbar-nav li a{
-  color:#f08a5d;
-  padding: 15px 20px;
+.nav-wrapper {
+  background-color:#b83b5e; 
+  box-shadow: none;
 }
 
-.navbar-nav  li a:hover {
-    color: #eeecda !important;
-    text-decoration: none;
+nav {
+  padding: 15px 0px;
+  color: #eeecda;
 }
+
+
+nav a:hover {
+    color: #f08a5d !important;
+    text-decoration: none;
+ 
+}
+
+/* Carousel Section */
+.swiper-container {
+  width: 100%;
+  padding-top: 50px;
+  padding-bottom: 200px;
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 300px;
+  background: #000;
+  -webkit-box-reflect: below 1px linear-gradient(transparent, transparent, #eeecda);
+}
+
+
 
 /* Footer Section */
 
 .footer-padding {
-	padding-bottom: 60px;
+  padding-bottom: 60px;
+  margin-top: 150px;
 }
 
 .footer {

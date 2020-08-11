@@ -56,7 +56,7 @@ const upload = multer ({
   limits: {fileSize: 5000000},
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb);
-}}).single("file");
+}}).single("myImage");
 
 //check file type
 function checkFileType (file, cb){
@@ -70,40 +70,10 @@ function checkFileType (file, cb){
   if (mimetype && extname) {
     return cb(null, true);
   } else {
-    cb("error: Images Only!")
+    cb("Error: Images Only!")
   }
 }
 
-//Init gfs
-// let gfs;
-
-// conn.once("open", () => {
-//   //Init stream
-//   gfs = Grid(conn.db, mongoose.mongo);
-//   gfs.collection("uploads");
-// });
-
-//Create storage engine
-
-// const storage = new GridFsStorage({
-//   url: mongoURI,
-//   file: (req, file) => {
-//     return new Promise((resolve, reject) => {
-//       crypto.randomBytes(16, (err, buf) => {
-//         if (err) {
-//           return reject(err);
-//         }
-//         const filename = buf.toString('hex') + path.extname(file.originalname);
-//         const fileInfo = {
-//           filename: filename,
-//           bucketName: 'uploads'
-//         };
-//         resolve(fileInfo);
-//       });
-//     });
-//   }
-// });
-// const upload = multer({ storage });
 
 
 //mongoose schema
