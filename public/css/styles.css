@@ -13,6 +13,8 @@ body {
   align-items: center;
 }
 
+
+
 .container-fluid {
     padding-top: 70px;
     padding-bottom: 70px;
@@ -39,14 +41,20 @@ a {
 
 nav {
   padding: 15px 0px;
-  color: #eeecda;
 }
 
+.navlink {
+  color: #eeecda;
+}
 
 nav a:hover {
     color: #f08a5d !important;
     text-decoration: none;
- 
+}
+
+nav .brand-logo {
+  color: #eeecda;
+  font-family: 'Beth Ellen', cursive;
 }
 
 /* Carousel Section */
@@ -65,7 +73,12 @@ nav a:hover {
   -webkit-box-reflect: below 1px linear-gradient(transparent, transparent, #eeecda);
 }
 
+/* Content section */
 
+label {
+  font-size: 1.5rem;
+  color: #eeecda
+}
 
 /* Footer Section */
 
