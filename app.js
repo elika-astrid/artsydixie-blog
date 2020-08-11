@@ -5,10 +5,10 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require('mongoose');
 const path = require("path"); 
-const crypto = require("crypto");
+// const crypto = require("crypto");
 const multer = require("multer");
-const GridFsStorage = require("multer-gridfs-storage");
-const Grid = require ("gridfs-stream");
+// const GridFsStorage = require("multer-gridfs-storage");
+// const Grid = require ("gridfs-stream");
 const methodOverride = require("method-override");
 const port = 3000;
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -22,7 +22,7 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(methodOverride("_method"));
+// app.use(methodOverride("_method"));
 app.use(express.static("public"));
 require('dotenv').config()
 
@@ -30,15 +30,13 @@ require('dotenv').config()
 
 const mongoURI = process.env.MONGO_URI;
 
-// const conn = mongoose.createConnection(mongoURI, {useNewUrlParser: true, useUnifiedTopology: true})
-
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true
 });
 
-// public folder
+//public folder
 
 app.use(express.static("./public"))
 
@@ -74,16 +72,6 @@ function checkFileType (file, cb){
   }
 }
 
-
-
-//mongoose schema
-const postSchema = {
-  title: String,
-  content: String
-};
-
-const Post = mongoose.model("Post", postSchema);
-
 // "/" or Root Route - Get and Post
 
 app.get("/", function(req, res){
@@ -94,6 +82,15 @@ app.get("/", function(req, res){
       });
   });
 });
+
+//mongoose schema
+
+const postSchema = {
+  title: String,
+  content: String
+};
+
+const Post = mongoose.model("Post", postSchema);
 
 // "/compose" route - Get and Post
 
@@ -127,6 +124,14 @@ const requestedPostId = req.params.postId;
   });
 
 });
+
+// GET /gallery
+
+app.get("/journal", function (req, res){
+  res.send("hello");
+
+
+})
 
 // GET /upload
 
@@ -163,7 +168,7 @@ app.get("/contact", function(req, res){
   res.render("contact", {contactContent: contactContent});
 });
 
-//listening on port 3000
+//listening on port locally
 
 app.listen(port, () => 
   console.log(`Server started on port ${port}`)
